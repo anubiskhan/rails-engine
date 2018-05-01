@@ -62,4 +62,24 @@ describe 'invoices API' do
     expect(response).to be_success
     expect(json["id"]).to eq(invoice.id)
   end
+  it 'can find an invoice by created at' do
+    invoice = Invoice.create!(customer_id: 17, merchant_id: 71, status: "pending")
+
+    get "/api/v1/invoices/find?created_at=#{invoice.created_at}"
+
+    json = JSON.parse(response.body)
+
+    expect(response).to be_success
+    expect(json["id"]).to eq(invoice.id)
+  end
+  it 'can find an invoice by updated at' do
+    invoice = Invoice.create!(customer_id: 17, merchant_id: 71, status: "pending")
+
+    get "/api/v1/invoices/find?updated_at=#{invoice.updated_at}"
+
+    json = JSON.parse(response.body)
+
+    expect(response).to be_success
+    expect(json["id"]).to eq(invoice.id)
+  end
 end
