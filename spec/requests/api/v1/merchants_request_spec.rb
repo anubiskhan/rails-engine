@@ -47,9 +47,9 @@ describe 'merchants API' do
 
     expect(Merchant.count).to eq(1)
 
-    delete "/api/v1/items/#{merchant.id}"
+    delete "/api/v1/merchants/#{merchant.id}"
 
     expect(Merchant.count).to eq(0)
-    expect(Merchant.find(merchant.id)).to raise_error(ActiveRecord::RecordNotFound)
+    expect{Merchant.find(merchant.id)}.to raise_error(ActiveRecord::RecordNotFound)
   end
 end

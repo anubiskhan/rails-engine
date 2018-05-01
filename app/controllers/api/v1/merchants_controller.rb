@@ -15,6 +15,10 @@ class Api::V1::MerchantsController < ApplicationController
     render json: Merchant.update(params[:id], merchant_params)
   end
 
+  def destroy
+    Merchant.destroy(params[:id])
+  end
+
   private
 
     def merchant_params
