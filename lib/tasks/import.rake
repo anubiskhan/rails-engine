@@ -24,4 +24,28 @@ namespace :import do
       Customer.create!(row.to_h)
     end
   end
+
+  desc 'Imports invoices from CSV'
+  task invoices: :environment do
+    Invoice.destroy_all
+    CSV.foreach('db/csv/invoices.csv', headers: true) do |row|
+      Invoice.create!(row.to_h)
+    end
+  end
+
+  desc 'Imports items from CSV'
+  task items: :environment do
+    Item.destroy_all
+    CSV.foreach('db/csv/items.csv', headers: true) do |row|
+      Item.create!(row.to_h)
+    end
+  end
+
+  desc 'Imports invoice items from CSV'
+  task invoice_items: :environment do
+    InvoiceItem.destroy_all
+    CSV.foreach('db/csv/invoice_items.csv', headers: true) do |row|
+      InvoiceItem.create!(row.to_h)
+    end
+  end
 end
