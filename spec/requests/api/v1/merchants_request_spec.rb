@@ -65,6 +65,26 @@ describe 'merchants API' do
 
     json = JSON.parse(response.body)
 
+    expect(json[0]["id"]).to eq(merchant.id)
+  end
+  it 'finds all merchants by name' do
+    merchants = create_list(:merchant, 10, name: 'Same')
+
+    get "/api/v1/merchants/find_all?name=#{merchants.first.name}"
+
+    json = JSON.parse(response.body)
+
+    merchants.each_with_index do |merchant, index|
+      expect(json[index]["id"]).to eq(merchant.id)
+    end
+  end
+  it 'sends a random merchant' do
+    merchant = create(:merchant)
+
+    get '/api/v1/merchants/random'
+
+    json = JSON.parse(response.body)
+
     expect(json["id"]).to eq(merchant.id)
   end
 end

@@ -3,6 +3,10 @@ class Api::V1::Merchants::FindController < ApplicationController
     render json: Merchant.find_by(search_params)
   end
 
+  def index
+    render json: Merchant.where(search_params)
+  end
+
   private
 
     def search_params
