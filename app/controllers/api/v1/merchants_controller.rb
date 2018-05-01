@@ -7,18 +7,6 @@ class Api::V1::MerchantsController < ApplicationController
     render json: Merchant.find(params[:id])
   end
 
-  def create
-    render json: Merchant.create(merchant_params)
-  end
-
-  def update
-    render json: Merchant.update(params[:id], merchant_params)
-  end
-
-  def destroy
-    Merchant.destroy(params[:id])
-  end
-
   private
 
     def merchant_params
