@@ -23,7 +23,8 @@ describe 'invoices API' do
     expect(json['merchant_id']).to eq(invoice.merchant_id)
   end
   it 'can find an invoice by id' do
-    invoice = Invoice.create!(customer_id: 17, merchant_id: 71, status: 'pending')
+    merchant = create(:merchant)
+    invoice = Invoice.create!(customer_id: 17, merchant_id: merchant.id, status: 'pending')
 
     get "/api/v1/invoices/find?id=#{invoice.id}"
 
@@ -33,7 +34,8 @@ describe 'invoices API' do
     expect(json['id']).to eq(invoice.id)
   end
   it 'can find an invoice by customer id' do
-    invoice = Invoice.create!(customer_id: 17, merchant_id: 71, status: 'pending')
+    merchant = create(:merchant)
+    invoice = Invoice.create!(customer_id: 17, merchant_id: merchant.id, status: 'pending')
 
     get "/api/v1/invoices/find?customer_id=#{invoice.customer_id}"
 
@@ -43,7 +45,8 @@ describe 'invoices API' do
     expect(json['id']).to eq(invoice.id)
   end
   it 'can find an invoice by merchant id' do
-    invoice = Invoice.create!(customer_id: 17, merchant_id: 71, status: 'pending')
+    merchant = create(:merchant)
+    invoice = Invoice.create!(customer_id: 17, merchant_id: merchant.id, status: 'pending')
 
     get "/api/v1/invoices/find?merchant_id=#{invoice.merchant_id}"
 
@@ -53,7 +56,8 @@ describe 'invoices API' do
     expect(json['id']).to eq(invoice.id)
   end
   it 'can find an invoice by status' do
-    invoice = Invoice.create!(customer_id: 17, merchant_id: 71, status: 'pending')
+    merchant = create(:merchant)
+    invoice = Invoice.create!(customer_id: 17, merchant_id: merchant.id, status: 'pending')
 
     get "/api/v1/invoices/find?status=#{invoice.status}"
 
@@ -63,7 +67,8 @@ describe 'invoices API' do
     expect(json['id']).to eq(invoice.id)
   end
   it 'can find an invoice by created at' do
-    invoice = Invoice.create!(customer_id: 17, merchant_id: 71, status: 'pending')
+    merchant = create(:merchant)
+    invoice = Invoice.create!(customer_id: 17, merchant_id: merchant.id, status: 'pending')
 
     get "/api/v1/invoices/find?created_at=#{invoice.created_at}"
 
@@ -73,7 +78,8 @@ describe 'invoices API' do
     expect(json['id']).to eq(invoice.id)
   end
   it 'can find an invoice by updated at' do
-    invoice = Invoice.create!(customer_id: 17, merchant_id: 71, status: 'pending')
+    merchant = create(:merchant)
+    invoice = Invoice.create!(customer_id: 17, merchant_id: merchant.id, status: 'pending')
 
     get "/api/v1/invoices/find?updated_at=#{invoice.updated_at}"
 
@@ -83,10 +89,11 @@ describe 'invoices API' do
     expect(json['id']).to eq(invoice.id)
   end
   it 'can find all invoices by merchant id' do
-    invoice1 = Invoice.create!(customer_id: 17, merchant_id: 71, status: 'pending')
-    invoice2 = Invoice.create!(customer_id: 18, merchant_id: 71, status: 'success')
+    merchant = create(:merchant)
+    invoice1 = Invoice.create!(customer_id: 17, merchant_id: merchant.id, status: 'pending')
+    invoice2 = Invoice.create!(customer_id: 18, merchant_id: merchant.id, status: 'success')
 
-    get '/api/v1/invoices/find_all?merchant_id=71'
+    get "/api/v1/invoices/find_all?merchant_id=#{merchant.id}"
 
     json = JSON.parse(response.body)
 
@@ -95,9 +102,10 @@ describe 'invoices API' do
     expect(json[1]['id']).to eq(invoice2.id)
   end
   it 'can find all invoices by a different parameter' do
-    invoice1 = Invoice.create!(customer_id: 17, merchant_id: 71, status: 'pending')
-    Invoice.create!(customer_id: 18, merchant_id: 71, status: 'success')
-    invoice3 = Invoice.create!(customer_id: 17, merchant_id: 71, status: 'success')
+    merchant = create(:merchant)
+    invoice1 = Invoice.create!(customer_id: 17, merchant_id: merchant.id, status: 'pending')
+    Invoice.create!(customer_id: 18, merchant_id: merchant.id, status: 'success')
+    invoice3 = Invoice.create!(customer_id: 17, merchant_id: merchant.id, status: 'success')
 
     get '/api/v1/invoices/find_all?customer_id=17'
 
@@ -109,9 +117,12 @@ describe 'invoices API' do
     expect(json[1]['id']).to eq(invoice3.id)
   end
   it 'can find a random invoice' do
-    invoice1 = Invoice.create!(customer_id: 17, merchant_id: 71, status: 'pending')
-    invoice2 = Invoice.create!(customer_id: 18, merchant_id: 72, status: 'success')
-    invoice3 = Invoice.create!(customer_id: 19, merchant_id: 73, status: 'success')
+    merchant1 = create(:merchant)
+    merchant2 = create(:merchant)
+    merchant3 = create(:merchant)
+    invoice1 = Invoice.create!(customer_id: 17, merchant_id: merchant1.id, status: 'pending')
+    invoice2 = Invoice.create!(customer_id: 18, merchant_id: merchant2.id, status: 'success')
+    invoice3 = Invoice.create!(customer_id: 19, merchant_id: merchant3.id, status: 'success')
 
     get '/api/v1/invoices/random'
 
@@ -119,5 +130,16 @@ describe 'invoices API' do
 
     expect(response).to be_success
     expect([invoice1.id, invoice2.id, invoice3.id]).to include(json[0]['id'])
+  end
+  it 'can return associated merchants' do
+    merchant = create(:merchant)
+    invoice = Invoice.create!(customer_id: 17, merchant_id: merchant.id, status: 'pending')
+
+    get "/api/v1/invoices/#{invoice.id}/merchant"
+
+    json = JSON.parse(response.body)
+
+    expect(response).to be_success
+    expect(json["id"]).to eq(merchant.id)
   end
 end
