@@ -6,6 +6,6 @@ class Api::V1::Merchants::FindController < ApplicationController
   private
 
     def search_params
-      params.permit(:id)
+      params.permit(:id, :name)
     end
 end
