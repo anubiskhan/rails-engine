@@ -108,4 +108,16 @@ describe 'invoices API' do
     expect(json[0]['id']).to eq(invoice1.id)
     expect(json[1]['id']).to eq(invoice3.id)
   end
+  it 'can find a random invoice' do
+    invoice1 = Invoice.create!(customer_id: 17, merchant_id: 71, status: 'pending')
+    invoice2 = Invoice.create!(customer_id: 18, merchant_id: 72, status: 'success')
+    invoice3 = Invoice.create!(customer_id: 19, merchant_id: 73, status: 'success')
+
+    get '/api/v1/invoices/random'
+
+    json = JSON.parse(response.body)
+
+    expect(response).to be_success
+    expect([invoice1.id, invoice2.id, invoice3.id]).to include(json[0]['id'])
+  end
 end
