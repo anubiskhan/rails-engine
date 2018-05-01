@@ -91,7 +91,7 @@ describe 'invoices API' do
   it 'can find all invoices by merchant id' do
     merchant = create(:merchant)
     invoice1 = Invoice.create!(customer_id: 17, merchant_id: merchant.id, status: 'pending')
-    invoice2 = Invoice.create!(customer_id: 18, merchant_id: merchant.id, status: 'success')
+    invoice2 = Invoice.create!(customer_id: 18, merchant_id: merchant.id, status: 'shipped')
 
     get "/api/v1/invoices/find_all?merchant_id=#{merchant.id}"
 
@@ -104,8 +104,8 @@ describe 'invoices API' do
   it 'can find all invoices by a different parameter' do
     merchant = create(:merchant)
     invoice1 = Invoice.create!(customer_id: 17, merchant_id: merchant.id, status: 'pending')
-    Invoice.create!(customer_id: 18, merchant_id: merchant.id, status: 'success')
-    invoice3 = Invoice.create!(customer_id: 17, merchant_id: merchant.id, status: 'success')
+    Invoice.create!(customer_id: 18, merchant_id: merchant.id, status: 'shipped')
+    invoice3 = Invoice.create!(customer_id: 17, merchant_id: merchant.id, status: 'shipped')
 
     get '/api/v1/invoices/find_all?customer_id=17'
 
@@ -121,8 +121,8 @@ describe 'invoices API' do
     merchant2 = create(:merchant)
     merchant3 = create(:merchant)
     invoice1 = Invoice.create!(customer_id: 17, merchant_id: merchant1.id, status: 'pending')
-    invoice2 = Invoice.create!(customer_id: 18, merchant_id: merchant2.id, status: 'success')
-    invoice3 = Invoice.create!(customer_id: 19, merchant_id: merchant3.id, status: 'success')
+    invoice2 = Invoice.create!(customer_id: 18, merchant_id: merchant2.id, status: 'shipped')
+    invoice3 = Invoice.create!(customer_id: 19, merchant_id: merchant3.id, status: 'shipped')
 
     get '/api/v1/invoices/random'
 
