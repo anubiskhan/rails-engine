@@ -22,4 +22,44 @@ describe 'invoices API' do
     expect(json["customer_id"]).to eq(invoice.customer_id)
     expect(json["merchant_id"]).to eq(invoice.merchant_id)
   end
+  it 'can find an invoice by id' do
+    invoice = Invoice.create!(customer_id: 17, merchant_id: 71, status: "pending")
+
+    get "/api/v1/invoices/find?id=#{invoice.id}"
+
+    json = JSON.parse(response.body)
+
+    expect(response).to be_success
+    expect(json["id"]).to eq(invoice.id)
+  end
+  it 'can find an invoice by customer id' do
+    invoice = Invoice.create!(customer_id: 17, merchant_id: 71, status: "pending")
+
+    get "/api/v1/invoices/find?customer_id=#{invoice.customer_id}"
+
+    json = JSON.parse(response.body)
+
+    expect(response).to be_success
+    expect(json["id"]).to eq(invoice.id)
+  end
+  it 'can find an invoice by merchant id' do
+    invoice = Invoice.create!(customer_id: 17, merchant_id: 71, status: "pending")
+
+    get "/api/v1/invoices/find?merchant_id=#{invoice.merchant_id}"
+
+    json = JSON.parse(response.body)
+
+    expect(response).to be_success
+    expect(json["id"]).to eq(invoice.id)
+  end
+  it 'can find an invoice by status' do
+    invoice = Invoice.create!(customer_id: 17, merchant_id: 71, status: "pending")
+
+    get "/api/v1/invoices/find?status=#{invoice.status}"
+
+    json = JSON.parse(response.body)
+
+    expect(response).to be_success
+    expect(json["id"]).to eq(invoice.id)
+  end
 end
