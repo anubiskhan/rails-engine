@@ -120,7 +120,7 @@ describe 'invoices API' do
     expect(response).to be_success
     expect(json["id"]).to eq(invoice.id)
   end
-  it 'can return associated merchant' do
+  it 'sends the associated merchant' do
     merchant = create(:merchant)
     invoice  = create(:invoice, merchant_id: merchant.id)
 
@@ -131,11 +131,22 @@ describe 'invoices API' do
     expect(response).to be_success
     expect(json["id"]).to eq(merchant.id)
   end
-  it 'can return associated customer' do
+  it 'sends the associated customer' do
     customer = create(:customer)
     invoice  = create(:invoice, customer_id: customer.id)
 
     get "/api/v1/invoices/#{invoice.id}/customer"
+
+    json = JSON.parse(response.body)
+
+    expect(response).to be_success
+    expect(json["id"]).to eq(customer.id)
+  end
+  it 'sends all associated transactions' do
+    invoice      = create(:invoice)
+    transactions = create_list(:transaction, 10, invoice_id: invoice.id)
+
+    get "/api/v1/invoices/#{invoice.id}/transactions"
 
     json = JSON.parse(response.body)
 
