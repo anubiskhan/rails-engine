@@ -20,7 +20,7 @@ describe 'customers API' do
 
     expect(response).to be_success
     expect(json['id']).to eq(customer.id)
-    expect(json['invoice_id']).to eq(customer.invoice_id)
+    expect(json['first_name']).to eq(customer.first_name)
   end
   it 'finds one customer by id' do
     customer = create(:customer)
