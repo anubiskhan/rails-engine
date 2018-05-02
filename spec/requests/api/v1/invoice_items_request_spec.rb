@@ -6,7 +6,7 @@ describe 'invoice items API' do
 
     get '/api/v1/invoice_items'
 
-    items = JSON.parse(response.body)
+    invoice_items = JSON.parse(response.body)
 
     expect(response).to be_success
     expect(invoice_items.length).to eq(10)
