@@ -95,7 +95,8 @@ describe 'transactions API' do
     expect(json[0]["id"]).to eq(transaction.id)
   end
   it 'finds all transactions by invoice id' do
-    transactions = create_list(:transaction, 10, invoice_id: 3)
+    invoice      = create(:invoice)
+    transactions = create_list(:transaction, 10, invoice_id: invoice.id)
 
     get "/api/v1/transactions/find_all?invoice_id=#{transactions.first.invoice_id}"
 
