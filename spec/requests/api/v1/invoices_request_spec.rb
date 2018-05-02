@@ -151,6 +151,8 @@ describe 'invoices API' do
     json = JSON.parse(response.body)
 
     expect(response).to be_success
-    expect(json["id"]).to eq(customer.id)
+    transactions.each_with_index do |transaction, index|
+      expect(json[index]["id"]).to eq(transaction.id)
+    end
   end
 end

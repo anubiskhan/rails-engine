@@ -7,11 +7,12 @@ Rails.application.routes.draw do
         get '/random',   to: 'random#show'
       end
       namespace :invoices do
-        get '/find',        to: 'find#show'
-        get '/find_all',    to: 'find#index'
-        get '/random',      to: 'random#show'
-        get ':id/merchant', to: 'merchant#index'
-        get ':id/customer', to: 'customer#index'
+        get '/find',            to: 'find#show'
+        get '/find_all',        to: 'find#index'
+        get '/random',          to: 'random#show'
+        get ':id/merchant',     to: 'merchant#index'
+        get ':id/customer',     to: 'customer#index'
+        get ':id/transactions', to: 'transactions#index'
       end
       namespace :items do
         get '/find',        to: 'find#show'
