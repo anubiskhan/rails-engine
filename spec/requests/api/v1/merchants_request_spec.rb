@@ -12,44 +12,79 @@ describe 'merchants API' do
     expect(merchants.count).to eq(5)
   end
   it 'sends one merchant by id' do
-    id = create(:merchant).id
-
-    get "/api/v1/merchants/#{id}"
-
-    merchant = JSON.parse(response.body)
-
-    expect(response).to be_success
-    expect(merchant['id']).to eq(id)
-  end
-  it 'creates a new merchant' do
-    merchant_params = { name: 'Newbie' }
-
-    post '/api/v1/merchants', params: { merchant: merchant_params }
-
-    merchant = Merchant.last
-
-    expect(response).to be_success
-    expect(merchant.name).to eq(merchant_params[:name])
-  end
-  it 'updates a merchant' do
-    id              = create(:merchant).id
-    old_name        = Merchant.last.name
-    merchant_params = { name: 'Newbie' }
-
-    put "/api/v1/merchants/#{id}", params: { merchant: merchant_params }
-    merchant = Merchant.find(id)
-
-    expect(merchant.name).to_not eq(old_name)
-    expect(merchant.name).to eq('Newbie')
-  end
-  it 'destroys a merchant' do
     merchant = create(:merchant)
 
-    expect(Merchant.count).to eq(1)
+    get "/api/v1/merchants/#{merchant.id}"
 
-    delete "/api/v1/merchants/#{merchant.id}"
+    json = JSON.parse(response.body)
 
-    expect(Merchant.count).to eq(0)
-    expect{Merchant.find(merchant.id)}.to raise_error(ActiveRecord::RecordNotFound)
+    expect(response).to be_success
+    expect(json['id']).to eq(merchant.id)
+    expect(json['name']).to eq(merchant.name)
+  end
+  it 'finds one merchant by id' do
+    merchant = create(:merchant)
+
+    get "/api/v1/merchants/find?id=#{merchant.id}"
+
+    json = JSON.parse(response.body)
+
+    expect(json["id"]).to eq(merchant.id)
+  end
+  it 'finds one merchant by name' do
+    merchant = create(:merchant)
+
+    get "/api/v1/merchants/find?name=#{merchant.name}"
+
+    json = JSON.parse(response.body)
+
+    expect(json["id"]).to eq(merchant.id)
+  end
+  it 'finds one merchant by created at' do
+    merchant = create(:merchant)
+
+    get "/api/v1/merchants/find?created_at=#{merchant.created_at}"
+
+    json = JSON.parse(response.body)
+
+    expect(json["id"]).to eq(merchant.id)
+  end
+  it 'finds one merchant by updated at' do
+    merchant = create(:merchant)
+
+    get "/api/v1/merchants/find?updated_at=#{merchant.updated_at}"
+
+    json = JSON.parse(response.body)
+
+    expect(json["id"]).to eq(merchant.id)
+  end
+  it 'finds all merchants by id' do
+    merchant = create(:merchant)
+
+    get "/api/v1/merchants/find_all?id=#{merchant.id}"
+
+    json = JSON.parse(response.body)
+
+    expect(json[0]["id"]).to eq(merchant.id)
+  end
+  it 'finds all merchants by name' do
+    merchants = create_list(:merchant, 10, name: 'Same')
+
+    get "/api/v1/merchants/find_all?name=#{merchants.first.name}"
+
+    json = JSON.parse(response.body)
+
+    merchants.each_with_index do |merchant, index|
+      expect(json[index]["id"]).to eq(merchant.id)
+    end
+  end
+  it 'sends a random merchant' do
+    merchant = create(:merchant)
+
+    get '/api/v1/merchants/random'
+
+    json = JSON.parse(response.body)
+
+    expect(json["id"]).to eq(merchant.id)
   end
 end
