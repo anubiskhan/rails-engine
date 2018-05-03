@@ -2,7 +2,7 @@ require 'csv'
 
 namespace :import do
   desc 'Runs all import tasks'
-  task :all do
+  task all: :environment do
     Rake::Task['import:merchants'].execute
     Rake::Task['import:customers'].execute
     Rake::Task['import:items'].execute
