@@ -112,4 +112,25 @@ describe 'customers API' do
     expect(json[1]["id"]).to eq(invoice2.id)
     expect(json[2]["id"]).to eq(invoice3.id)
   end
+  it 'sends customer transactions' do
+    customer = create(:customer)
+    invoice1 = create(:invoice, customer_id: customer.id)
+    invoice2 = create(:invoice, customer_id: customer.id)
+    invoice3 = create(:invoice, customer_id: customer.id)
+    transaction1 = create(:transaction, invoice_id: invoice1.id)
+    transaction2 = create(:transaction, invoice_id: invoice1.id)
+    transaction3 = create(:transaction, invoice_id: invoice2.id)
+    create(:transaction, invoice_id: invoice2.id)
+    create(:transaction, invoice_id: invoice3.id)
+    create(:transaction, invoice_id: invoice3.id)
+
+    get "/api/v1/customers/#{customer.id}/transactions"
+
+    json = JSON.parse(response.body)
+
+    expect(json.length).to eq(6)
+    expect(json[0]["id"]).to eq(transaction1.id)
+    expect(json[1]["id"]).to eq(transaction2.id)
+    expect(json[2]["id"]).to eq(transaction3.id)
+  end
 end
