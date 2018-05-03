@@ -55,6 +55,20 @@ describe 'items API' do
     expect(response).to be_success
     expect([item1.id, item2.id, item3.id]).to include(json['id'])
   end
+  xit 'sends all associated invoice items' do
+    # need invoice_items table
+    item          = create(:item)
+    invoice_items = create_list(:invoice_item, 10, item_id: item.id)
+
+    get "/api/v1/items/#{item.id}/invoice_items"
+
+    json = JSON.parse(response.body)
+
+    expect(response).to be_success
+    invoice_items.each_with_index do |invoice_item, index|
+      expect(json[index]["id"]).to eq(invoice_item.id)
+    end
+  end
   it 'sends the associated merchant' do
     merchant = create(:merchant)
     item     = create(:item, merchant_id: merchant.id)

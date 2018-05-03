@@ -1,6 +1,16 @@
 require 'csv'
 
 namespace :import do
+  desc 'Runs all import tasks'
+  task :all do
+    Rake::Task['import:merchants'].execute
+    Rake::Task['import:customers'].execute
+    Rake::Task['import:items'].execute
+    Rake::Task['import:invoices'].execute
+    Rake::Task['import:transactions'].execute
+    Rake::Task['import:invoice_items'].execute
+  end
+
   desc 'Imports merchants from CSV'
   task merchants: :environment do
     Merchant.destroy_all
