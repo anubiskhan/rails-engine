@@ -55,4 +55,15 @@ describe 'items API' do
     expect(response).to be_success
     expect([item1.id, item2.id, item3.id]).to include(json['id'])
   end
+  it 'sends the associated merchant' do
+    merchant = create(:merchant)
+    item     = create(:item, merchant_id: merchant.id)
+
+    get "/api/v1/items/#{item.id}/merchant"
+
+    json = JSON.parse(response.body)
+
+    expect(response).to be_success
+    expect(json["id"]).to eq(merchant.id)
+  end
 end
