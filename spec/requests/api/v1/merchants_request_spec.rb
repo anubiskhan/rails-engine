@@ -97,4 +97,14 @@ describe 'merchants API' do
 
     expect(invoices.length).to eq(3)
   end
+  it 'sends merchant items' do
+    merchant = create(:merchant)
+    create_list(:item, 3, merchant_id: merchant.id)
+
+    get "/api/v1/merchants/#{merchant.id}/items"
+
+    items = JSON.parse(response.body)
+
+    expect(items.length).to eq(3)
+  end
 end
