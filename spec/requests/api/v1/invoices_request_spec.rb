@@ -155,10 +155,30 @@ describe 'invoices API' do
       expect(json[index]["id"]).to eq(transaction.id)
     end
   end
+  it 'sends all associated invoice items' do
+    # need invoice_items table
+    invoice       = create(:invoice)
+    invoice_items = create_list(:invoice_item, 10, invoice_id: invoice.id)
+
+    get "/api/v1/invoices/#{invoice.id}/invoice_items"
+
+    json = JSON.parse(response.body)
+
+    expect(response).to be_success
+    invoice_items.each_with_index do |invoice_item, index|
+      expect(json[index]["id"]).to eq(invoice_item.id)
+    end
+  end
   xit 'sends all associated items' do
     # need invoice_items table
     invoice = create(:invoice)
-    items   = create_list(:item, 10)
+    item_1  = create(:item)
+    item_2  = create(:item)
+    item_3  = create(:item)
+    items   = [item_1, item_2, item_3]
+    create(:invoice_item, invoice_id: invoice.id, item_id: item_1.id)
+    create(:invoice_item, invoice_id: invoice.id, item_id: item_2.id)
+    create(:invoice_item, invoice_id: invoice.id, item_id: item_3.id)
 
     get "/api/v1/invoices/#{invoice.id}/items"
 
