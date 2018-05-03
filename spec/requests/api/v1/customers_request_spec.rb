@@ -96,4 +96,13 @@ describe 'customers API' do
 
     expect(json["id"]).to eq(customer.id)
   end
+  it 'sends customer invoices' do
+    customer = create(:customer)
+
+    get '/api/v1/customers/random'
+
+    json = JSON.parse(response.body)
+
+    expect(json["id"]).to eq(customer.id)
+  end
 end
