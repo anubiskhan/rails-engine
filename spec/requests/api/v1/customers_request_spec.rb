@@ -98,11 +98,18 @@ describe 'customers API' do
   end
   it 'sends customer invoices' do
     customer = create(:customer)
+    invoice1 = create(:invoice, customer_id: customer.id)
+    invoice2 = create(:invoice, customer_id: customer.id)
+    invoice3 = create(:invoice, customer_id: customer.id)
+    create(:invoice)
 
-    get '/api/v1/customers/random'
+    get "/api/v1/customers/#{customer.id}/invoices"
 
     json = JSON.parse(response.body)
 
-    expect(json["id"]).to eq(customer.id)
+    expect(json.length).to eq(3)
+    expect(json[0]["id"]).to eq(invoice1.id)
+    expect(json[1]["id"]).to eq(invoice2.id)
+    expect(json[2]["id"]).to eq(invoice3.id)
   end
 end
