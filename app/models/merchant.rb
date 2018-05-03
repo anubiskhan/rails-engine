@@ -6,7 +6,7 @@ class Merchant < ApplicationRecord
   def favorite_customer
     customers
       .joins(:transactions)
-      .merge(Transaction.where(result: 'success'))
+      .merge(Transaction.successful)
       .first
   end
 end
