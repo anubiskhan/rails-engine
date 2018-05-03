@@ -29,6 +29,7 @@ describe 'merchants API' do
 
     json = JSON.parse(response.body)
 
+    expect(response).to be_success
     expect(json["id"]).to eq(merchant.id)
   end
   it 'finds one merchant by name' do
@@ -38,6 +39,7 @@ describe 'merchants API' do
 
     json = JSON.parse(response.body)
 
+    expect(response).to be_success
     expect(json["id"]).to eq(merchant.id)
   end
   it 'finds one merchant by created at' do
@@ -47,6 +49,7 @@ describe 'merchants API' do
 
     json = JSON.parse(response.body)
 
+    expect(response).to be_success
     expect(json["id"]).to eq(merchant.id)
   end
   it 'finds one merchant by updated at' do
@@ -56,6 +59,7 @@ describe 'merchants API' do
 
     json = JSON.parse(response.body)
 
+    expect(response).to be_success
     expect(json["id"]).to eq(merchant.id)
   end
   it 'finds all merchants by id' do
@@ -65,6 +69,7 @@ describe 'merchants API' do
 
     json = JSON.parse(response.body)
 
+    expect(response).to be_success
     expect(json[0]["id"]).to eq(merchant.id)
   end
   it 'finds all merchants by name' do
@@ -85,6 +90,7 @@ describe 'merchants API' do
 
     json = JSON.parse(response.body)
 
+    expect(response).to be_success
     expect(json["id"]).to eq(merchant.id)
   end
   it 'sends merchant invoices' do
@@ -95,6 +101,7 @@ describe 'merchants API' do
 
     invoices = JSON.parse(response.body)
 
+    expect(response).to be_success
     expect(invoices.length).to eq(3)
   end
   it 'sends merchant items' do
@@ -105,6 +112,26 @@ describe 'merchants API' do
 
     items = JSON.parse(response.body)
 
+    expect(response).to be_success
     expect(items.length).to eq(3)
+  end
+  it 'sends merchant favorite customer' do
+    merchant = create(:merchant)
+    customer1 = create(:customer)
+    customer2 = create(:customer)
+    invoice1 = create(:invoice, merchant_id: merchant.id, customer_id: customer1.id)
+    invoice3 = create(:invoice, merchant_id: merchant.id, customer_id: customer2.id)
+    create(:transaction, invoice_id: invoice1.id, result: 'success')
+    create(:transaction, invoice_id: invoice1.id, result: 'success')
+    create(:transaction, invoice_id: invoice3.id, result: 'success')
+    create(:transaction, invoice_id: invoice3.id, result: 'failed')
+    create(:transaction, invoice_id: invoice3.id, result: 'failed')
+
+    get "/api/v1/merchants/#{merchant.id}/favorite_customer"
+
+    customer = JSON.parse(response.body)
+
+    expect(response).to be_success
+    expect(customer["id"]).to eq(customer1.id)
   end
 end
