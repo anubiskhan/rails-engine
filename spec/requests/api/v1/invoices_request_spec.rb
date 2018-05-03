@@ -118,7 +118,7 @@ describe 'invoices API' do
     json = JSON.parse(response.body)
 
     expect(response).to be_success
-    expect(json["id"]).to eq(invoice.id)
+    expect(json[0]["id"]).to eq(invoice.id)
   end
   it 'sends the associated merchant' do
     merchant = create(:merchant)
@@ -153,6 +153,19 @@ describe 'invoices API' do
     expect(response).to be_success
     transactions.each_with_index do |transaction, index|
       expect(json[index]["id"]).to eq(transaction.id)
+    end
+  end
+  it 'sends all associated items' do
+    invoice = create(:invoice)
+    items   = create_list(:item, 10)
+
+    get "/api/v1/invoices/#{invoice.id}/items"
+
+    json = JSON.parse(response.body)
+
+    expect(response).to be_success
+    items.each_with_index do |item, index|
+      expect(json[index]["id"]).to eq(item.id)
     end
   end
 end

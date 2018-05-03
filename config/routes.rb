@@ -13,6 +13,7 @@ Rails.application.routes.draw do
         get ':id/merchant',     to: 'merchant#index'
         get ':id/customer',     to: 'customer#index'
         get ':id/transactions', to: 'transactions#index'
+        get ':id/items',        to: 'items#index'
       end
       namespace :items do
         get '/find',        to: 'find#show'
@@ -31,7 +32,7 @@ Rails.application.routes.draw do
       end
       resources :customers,    only: %i[index show]
       resources :invoices,     only: %i[index show]
-      resources :items,     only: %i[index show]
+      resources :items,        only: %i[index show]
       resources :merchants,    only: %i[index show]
       resources :transactions, only: %i[index show]
     end
