@@ -2,9 +2,11 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       namespace :customers do
-        get '/find',     to: 'find#show'
-        get '/find_all', to: 'find#index'
-        get '/random',   to: 'random#show'
+        get '/find',        to: 'find#show'
+        get '/find_all',    to: 'find#index'
+        get '/random',      to: 'random#show'
+        get '/:id/invoices', to: 'invoices#index'
+        get '/:id/transactions', to: 'transactions#index'
       end
       namespace :invoices do
         get '/find',             to: 'find#show'
@@ -29,14 +31,17 @@ Rails.application.routes.draw do
         get '/:id/merchant',      to: 'merchant#show'
       end
       namespace :merchants do
-        get '/find',     to: 'find#show'
-        get '/find_all', to: 'find#index'
-        get '/random',   to: 'random#show'
+        get '/find',         to: 'find#show'
+        get '/find_all',     to: 'find#index'
+        get '/random',       to: 'random#show'
+        get '/:id/invoices', to: 'invoices#index'
+        get '/:id/items',    to: 'items#index'
       end
       namespace :transactions do
-        get '/find',     to: 'find#show'
-        get '/find_all', to: 'find#index'
-        get '/random',   to: 'random#show'
+        get '/find',        to: 'find#show'
+        get '/find_all',    to: 'find#index'
+        get '/random',      to: 'random#show'
+        get '/:id/invoice', to: 'invoice#show'
       end
       resources :customers,     only: %i[index show]
       resources :invoices,      only: %i[index show]

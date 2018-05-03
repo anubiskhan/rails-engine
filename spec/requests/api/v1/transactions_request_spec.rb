@@ -115,4 +115,14 @@ describe 'transactions API' do
 
     expect(json["id"]).to eq(transaction.id)
   end
+  it 'send transaction invoice' do
+    invoice = create(:invoice)
+    transaction = create(:transaction, invoice_id: invoice.id)
+
+    get "/api/v1/transactions/#{transaction.id}/invoice"
+
+    json = JSON.parse(response.body)
+
+    expect(json["id"]).to eq(invoice.id)
+  end
 end
