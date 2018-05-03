@@ -20,7 +20,6 @@ describe 'transactions API' do
 
     expect(response).to be_success
     expect(json['id']).to eq(transaction.id)
-    expect(json['invoice_id']).to eq(transaction.invoice_id)
   end
   it 'finds one transaction by id' do
     transaction = create(:transaction)

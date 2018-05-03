@@ -55,4 +55,26 @@ describe 'invoice items API' do
     expect(response).to be_success
     expect([invoice_item1.id, invoice_item2.id, invoice_item3.id]).to include(json['id'])
   end
+  it 'sends the associated invoice' do
+    invoice      = create(:invoice)
+    invoice_item = create(:invoice_item, invoice_id: invoice.id)
+
+    get "/api/v1/invoice_items/#{invoice_item.id}/invoice"
+
+    json = JSON.parse(response.body)
+
+    expect(response).to be_success
+    expect(json["id"]).to eq(invoice.id)
+  end
+  it 'sends the associated item' do
+    item         = create(:item)
+    invoice_item = create(:invoice_item, item_id: item.id)
+
+    get "/api/v1/invoice_items/#{invoice_item.id}/item"
+
+    json = JSON.parse(response.body)
+
+    expect(response).to be_success
+    expect(json["id"]).to eq(item.id)
+  end
 end

@@ -55,8 +55,7 @@ describe 'items API' do
     expect(response).to be_success
     expect([item1.id, item2.id, item3.id]).to include(json['id'])
   end
-  xit 'sends all associated invoice items' do
-    # need invoice_items table
+  it 'sends all associated invoice items' do
     item          = create(:item)
     invoice_items = create_list(:invoice_item, 10, item_id: item.id)
 
