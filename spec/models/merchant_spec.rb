@@ -27,12 +27,12 @@ describe Merchant do
       merchant2 = create(:merchant)
       invoice1 = create(:invoice, merchant_id: merchant1.id, created_at: '2018-01-01')
       invoice2 = create(:invoice, merchant_id: merchant2.id, created_at: '2018-01-01')
-      create(:invoice_item, invoice_id: invoice1.id, quantity: 2, unit_price: 10)
+      create(:invoice_item, invoice_id: invoice1.id, quantity: 2, unit_price: 1000)
       create(:invoice_item, invoice_id: invoice2.id, quantity: 4, unit_price: 3)
       create(:transaction, invoice_id: invoice1.id, result: 'success')
       create(:transaction, invoice_id: invoice2.id, result: 'success')
 
-      expect(Merchant.revenue_on_date('2018-01-01')).to eq({"total_revenue"=>"32"})
+      expect(Merchant.revenue_on_date('2018-01-01')).to eq({"total_revenue"=>"20.12"})
     end
     it 'sends top x merchants by total revenue' do
       merchant1 = create(:merchant, name: 'M1')
@@ -67,6 +67,14 @@ describe Merchant do
       transaction4 = create(:transaction, invoice_id: invoice4.id, result: 'failed')
 
       expect(customers_with_pending_invoices.length).to eq(2)
+    end
+    it 'sends revenue of a merchant on a date' do
+      merchant = create(:merchant)
+      invoice = create(:invoice, merchant_id: merchant.id, created_at: '2018-01-01')
+      create(:invoice_item, invoice_id: invoice.id, quantity: 2, unit_price: 1100)
+      create(:transaction, invoice_id: invoice.id, result: 'success')
+
+      expect(merchant.revenue_on_date(invoice.created_at)).to eq({"revenue"=>"22.0"})
     end
   end
   context 'instance methods' do

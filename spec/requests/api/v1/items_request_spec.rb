@@ -93,8 +93,34 @@ describe 'items API' do
     create(:transaction, invoice_id: invoice2.id, result: 'success')
     create(:transaction, invoice_id: invoice3.id, result: 'success')
 
-    expect(Item.most_revenue(2)[0]["id"]).to eq(item3.id)
-    expect(Item.most_revenue(2)[1]["id"]).to eq(item1.id)
-  end
+    get "/api/v1/items/most_revenue?quantity=2"
 
+    json = JSON.parse(response.body)
+
+    expect(response).to be_success
+    expect(json[0]["id"]).to eq(item3.id)
+    expect(json[1]["id"]).to eq(item1.id)
+  end
+  it 'sends top x items by total sold' do
+    item1 = create(:item)
+    item2 = create(:item)
+    item3 = create(:item)
+    invoice1 = create(:invoice)
+    invoice2 = create(:invoice)
+    invoice3 = create(:invoice)
+    create(:invoice_item, invoice_id: invoice1.id, item_id: item1.id, quantity: 2, unit_price: 10)
+    create(:invoice_item, invoice_id: invoice2.id, item_id: item2.id, quantity: 4, unit_price: 3)
+    create(:invoice_item, invoice_id: invoice3.id, item_id: item3.id, quantity: 5, unit_price: 5)
+    create(:transaction, invoice_id: invoice1.id, result: 'success')
+    create(:transaction, invoice_id: invoice2.id, result: 'success')
+    create(:transaction, invoice_id: invoice3.id, result: 'success')
+
+    get "/api/v1/items/most_items?quantity=2"
+
+    json = JSON.parse(response.body)
+
+    expect(response).to be_success
+    expect(json[0]["id"]).to eq(item3.id)
+    expect(json[1]["id"]).to eq(item2.id)
+  end
 end

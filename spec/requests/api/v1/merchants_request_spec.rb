@@ -139,7 +139,7 @@ describe 'merchants API' do
     merchant2 = create(:merchant)
     invoice1 = create(:invoice, merchant_id: merchant1.id, created_at: '2018-01-01')
     invoice2 = create(:invoice, merchant_id: merchant2.id, created_at: '2018-01-01')
-    create(:invoice_item, invoice_id: invoice1.id, quantity: 2, unit_price: 10)
+    create(:invoice_item, invoice_id: invoice1.id, quantity: 2, unit_price: 1000)
     create(:invoice_item, invoice_id: invoice2.id, quantity: 4, unit_price: 3)
     create(:transaction, invoice_id: invoice1.id, result: 'success')
     create(:transaction, invoice_id: invoice2.id, result: 'success')
@@ -149,7 +149,21 @@ describe 'merchants API' do
     json = JSON.parse(response.body)
 
     expect(response).to be_success
-    expect(json).to eq({"total_revenue"=>"32"})
+    expect(json).to eq({"total_revenue"=>"20.12"})
+  end
+  it 'sends revenue of a merchant on a date' do
+    merchant = create(:merchant)
+    invoice = create(:invoice, merchant_id: merchant.id, created_at: '2018-01-01')
+    create(:invoice_item, invoice_id: invoice.id, quantity: 2, unit_price: 1100)
+    create(:transaction, invoice_id: invoice.id, result: 'success')
+
+
+    get "/api/v1/merchants/#{merchant.id}/revenue?date=2018-01-01"
+
+    json = JSON.parse(response.body)
+
+    expect(response).to be_success
+    expect(json).to eq({"revenue"=>"22.0"})
   end
   it 'finds total revenue for single merchant' do
     merchant      = create(:merchant)
