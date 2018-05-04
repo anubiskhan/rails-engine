@@ -45,7 +45,7 @@ describe 'merchants API' do
   it 'finds one merchant by created at' do
     merchant = create(:merchant, created_at: Date.today)
 
-    get "/api/v1/merchants/find?created_at=2018-01-01"
+    get "/api/v1/merchants/find?created_at=#{merchant.created_at}"
 
     json = JSON.parse(response.body)
 
@@ -55,7 +55,7 @@ describe 'merchants API' do
   it 'finds one merchant by updated at' do
     merchant = create(:merchant, updated_at: Date.today)
 
-    get "/api/v1/merchants/find?updated_at=2018-01-01"
+    get "/api/v1/merchants/find?updated_at=#{merchant.updated_at}"
 
     json = JSON.parse(response.body)
 
