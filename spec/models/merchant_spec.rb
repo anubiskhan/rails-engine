@@ -22,5 +22,17 @@ describe Merchant do
 
       expect(merchant.favorite_customer).to eq(customer1)
     end
+    it 'sends revenue of all merchants on a date' do
+      merchant1 = create(:merchant)
+      merchant2 = create(:merchant)
+      invoice1 = create(:invoice, merchant_id: merchant1.id, created_at: '2018-01-01')
+      invoice2 = create(:invoice, merchant_id: merchant2.id, created_at: '2018-01-01')
+      create(:invoice_item, invoice_id: invoice1.id, quantity: 2, unit_price: 10)
+      create(:invoice_item, invoice_id: invoice2.id, quantity: 4, unit_price: 3)
+      create(:transaction, invoice_id: invoice1.id, result: 'success')
+      create(:transaction, invoice_id: invoice2.id, result: 'success')
+
+      expect(Merchant.revenue_on_date('2018-01-01')).to eq(32)
+    end
   end
 end
