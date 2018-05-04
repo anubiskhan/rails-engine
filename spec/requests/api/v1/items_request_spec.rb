@@ -31,6 +31,16 @@ describe 'items API' do
     expect(response).to be_success
     expect(json['id']).to eq(item.id)
   end
+  it 'can find an item by unit price' do
+    item = create(:item)
+
+    get "/api/v1/items/find?unit_price=#{item.unit_price}"
+
+    json = JSON.parse(response.body)
+
+    expect(response).to be_success
+    expect(json['id']).to eq(item.id)
+  end
   it 'can find multiple items' do
     item1 = create(:item, unit_price: 112)
     item2 = create(:item, unit_price: 112)
@@ -123,7 +133,30 @@ describe 'items API' do
     expect(json[0]["id"]).to eq(item3.id)
     expect(json[1]["id"]).to eq(item2.id)
   end
-  xit 'sends the date of the most sales for a single item' do
+  it 'sends top x items by total sold' do
+    item1 = create(:item)
+    item2 = create(:item)
+    item3 = create(:item)
+    invoice1 = create(:invoice)
+    invoice2 = create(:invoice)
+    invoice3 = create(:invoice)
+    create(:invoice_item, invoice_id: invoice1.id, item_id: item1.id, quantity: 21)
+    create(:invoice_item, invoice_id: invoice2.id, item_id: item2.id, quantity: 43)
+    create(:invoice_item, invoice_id: invoice3.id, item_id: item3.id, quantity: 5)
+    create(:transaction, invoice_id: invoice1.id, result: 'success')
+    create(:transaction, invoice_id: invoice2.id, result: 'success')
+    create(:transaction, invoice_id: invoice3.id, result: 'success')
+
+    get '/api/v1/items/most_items?quantity=2'
+
+    json = JSON.parse(response.body)
+
+    expect(Item.most_items(2)[0]["id"]).to eq(item2.id)
+    expect(Item.most_items(2)[1]["id"]).to eq(item1.id)
+    expect(json.length).to eq(2)
+    expect(json.first['id']).to eq(item2.id)
+  end
+  it 'sends the date of the most sales for a single item' do
     item          = create(:item)
     bad_invoice   = create(:invoice, created_at: Date.yesterday)
     good_invoice  = create(:invoice, created_at: Date.today)

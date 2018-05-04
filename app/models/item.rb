@@ -3,13 +3,17 @@ class Item < ApplicationRecord
   has_many :invoice_items
   has_many :invoices, through: :invoice_items
 
+  default_scope {order(:id)}
+
   def self.most_revenue(quantity = 3)
-    joins(invoices: [:invoice_items, :transactions])
+    unscoped
+      .joins(invoices: [:invoice_items, :transactions])
       .where(transactions: {result: 1})
       .group(:id)
       .order("sum(invoice_items.quantity * invoice_items.unit_price) DESC")
       .limit(quantity)
   end
+<<<<<<< HEAD
   def self.most_items(quantity = 3)
     select("sum(invoice_items.quantity), items.*")
       .joins(invoices: :transactions)
@@ -18,13 +22,25 @@ class Item < ApplicationRecord
       .order("sum(invoice_items.quantity) DESC")
       .limit(quantity)
   end
+=======
+
+  def self.most_items(quantity = 3)
+    unscoped
+      .select("items.*, sum(invoice_items.quantity) as sold")
+      .joins(:invoice_items)
+      .group("items.id")
+      .order("sold DESC")
+      .limit(quantity)
+  end
+
+>>>>>>> Add a lot of stuff that fixes most everything.
   def best_day
     invoices
-      .select("sum(invoice_items.quantity * invoice_items.unit_price) AS revenue, Date(invoices.created_at) AS best_day")
-      .joins(:invoice_items, :transactions)
-      .merge(Transaction.successful)
-      .group('best_day')
-      .order('revenue')
-      .limit(1)
+      .joins(:invoice_items)
+      .select('invoices.*, SUM(invoice_items.quantity) AS max')
+      .group(:created_at, :id)
+      .order('max DESC, created_at DESC')
+      .first
+      .created_at
   end
 end

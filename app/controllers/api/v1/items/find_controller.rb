@@ -1,10 +1,18 @@
 class Api::V1::Items::FindController < ApplicationController
   def show
-    render json: Item.find_by(search_params)
+    if params[:unit_price]
+      render json: Item.find_by(unit_price: (params[:unit_price].delete('.')))
+    else
+      render json: Item.find_by(search_params)
+    end
   end
 
   def index
-    render json: Item.where(search_params)
+    if params[:unit_price]
+      render json: Item.where(unit_price: (params[:unit_price].delete('.')))
+    else
+      render json: Item.where(search_params)
+    end
   end
 
   private
