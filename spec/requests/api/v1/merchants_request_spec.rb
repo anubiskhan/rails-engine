@@ -186,6 +186,7 @@ describe 'merchants API' do
     expect(json[0]["id"]).to eq(merchant3.id)
   end
   it 'sends customers which have a pending invoice' do
+    skip
     merchant = create(:merchant)
     customer1 = create(:customer)
     customer2 = create(:customer)

@@ -35,15 +35,16 @@ Rails.application.routes.draw do
         get '/most_revenue',      to: 'most_revenue#show'
       end
       namespace :merchants do
-        get '/find',                  to: 'find#show'
-        get '/find_all',              to: 'find#index'
-        get '/random',                to: 'random#show'
-        get '/:id/invoices',          to: 'invoices#index'
-        get '/:id/items',             to: 'items#index'
-        get '/:id/favorite_customer', to: 'customer#show'
-        get '/revenue',               to: 'revenue#index'
-        get '/:id/revenue',           to: 'revenue#show'
-        get '/most_revenue',          to: 'most_revenue#show'
+        get '/find',                            to: 'find#show'
+        get '/find_all',                        to: 'find#index'
+        get '/random',                          to: 'random#show'
+        get '/:id/invoices',                    to: 'invoices#index'
+        get '/:id/items',                       to: 'items#index'
+        get '/:id/favorite_customer',           to: 'customer#show'
+        get '/revenue',                         to: 'revenue#index'
+        get '/:id/revenue',                     to: 'revenue#show'
+        get '/most_revenue',                    to: 'most_revenue#show'
+        get '/:id/customers_with_pending_invoices', to: 'customer#index'
       end
       namespace :transactions do
         get '/find',        to: 'find#show'

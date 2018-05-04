@@ -33,7 +33,7 @@ class Merchant < ApplicationRecord
       .limit(quantity)
   end
 
-  def pending_invoices
-    
+  def customers_with_pending_invoices
+
   end
 end
