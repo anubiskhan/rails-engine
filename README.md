@@ -54,16 +54,16 @@ Run ```rspec``` on the command line
 
 #### Contributors
 
-  [Adam Lusk](https://github.com/Vadlusk)
+  [Adam Lusk](https://github.com/Vadlusk)  
   [Kelly Schroeder](https://github.com/anubiskhan)
 ##### Versions
 
-factory_bot 4.8.2
-faker 1.8.7
-json 2.1.0
-pg (>= 0.18, < 2.0)
-rails (~> 5.1.6)
-rspec 3.7.1
-ruby 2.4.1p111
-shoulda-matchers 3.1.2
-simplecov 0.16.1
+factory_bot 4.8.2  
+faker 1.8.7  
+json 2.1.0  
+pg (>= 0.18, < 2.0)  
+rails (~> 5.1.6)  
+rspec 3.7.1  
+ruby 2.4.1p111  
+shoulda-matchers 3.1.2  
+simplecov 0.16.1  
