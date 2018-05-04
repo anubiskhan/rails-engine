@@ -32,7 +32,7 @@ describe Merchant do
       create(:transaction, invoice_id: invoice1.id, result: 'success')
       create(:transaction, invoice_id: invoice2.id, result: 'success')
 
-      expect(Merchant.revenue_on_date('2018-01-01')).to eq(32)
+      expect(Merchant.revenue_on_date('2018-01-01')).to eq({"total_revenue"=>"32"})
     end
   end
 end
