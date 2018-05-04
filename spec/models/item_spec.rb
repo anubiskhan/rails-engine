@@ -6,7 +6,6 @@ describe Item do
     it { should have_many(:invoice_items) }
   end
   context 'instance methods' do
-<<<<<<< HEAD
     it 'sends top x items by total revenue' do
       item1 = create(:item)
       item2 = create(:item)
@@ -41,8 +40,6 @@ describe Item do
       expect(Item.most_items(2)[0]["id"]).to eq(item3.id)
       expect(Item.most_items(2)[1]["id"]).to eq(item2.id)
     end
-=======
->>>>>>> Add a lot of stuff that fixes most everything.
     it '#best day' do
       item          = create(:item)
       bad_invoice   = create(:invoice, created_at: Date.yesterday)

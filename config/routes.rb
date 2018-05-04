@@ -36,7 +36,6 @@ Rails.application.routes.draw do
         get '/:id/invoice', to: 'invoice#show'
         get '/:id/item',    to: 'item#show'
       end
-<<<<<<< HEAD
       namespace :items do
         get '/find',              to: 'find#show'
         get '/find_all',          to: 'find#index'
@@ -47,8 +46,6 @@ Rails.application.routes.draw do
         get '/most_items',        to: 'most_items#show'
         get '/:id/best_day',      to: 'best_day#show'
       end
-=======
->>>>>>> Add a lot of stuff that fixes most everything.
       namespace :merchants do
         get '/find',                            to: 'find#show'
         get '/find_all',                        to: 'find#index'

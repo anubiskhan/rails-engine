@@ -18,7 +18,6 @@ class Merchant < ApplicationRecord
     .where(transactions: {result: 1})
     .where("Date(invoices.created_at) = ?", date)
     .sum("invoice_items.quantity * invoice_items.unit_price").to_f/100}"}
-<<<<<<< HEAD
   end
 
   def revenue_on_date(date)
@@ -26,8 +25,6 @@ class Merchant < ApplicationRecord
     .where(transactions: {result: 1})
     .where("Date(invoices.created_at) = ?", date)
     .sum("invoice_items.quantity * invoice_items.unit_price").to_f/100}"}
-=======
->>>>>>> Add a lot of stuff that fixes most everything.
   end
 
   def revenue

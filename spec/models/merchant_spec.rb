@@ -28,19 +28,11 @@ describe Merchant do
       invoice1 = create(:invoice, merchant_id: merchant1.id, created_at: '2018-01-01')
       invoice2 = create(:invoice, merchant_id: merchant2.id, created_at: '2018-01-01')
       create(:invoice_item, invoice_id: invoice1.id, quantity: 2, unit_price: 1000)
-<<<<<<< HEAD
       create(:invoice_item, invoice_id: invoice2.id, quantity: 4, unit_price: 3)
       create(:transaction, invoice_id: invoice1.id, result: 'success')
       create(:transaction, invoice_id: invoice2.id, result: 'success')
 
       expect(Merchant.revenue_on_date('2018-01-01')).to eq({"total_revenue"=>"20.12"})
-=======
-      create(:invoice_item, invoice_id: invoice2.id, quantity: 4, unit_price: 300)
-      create(:transaction, invoice_id: invoice1.id, result: 'success')
-      create(:transaction, invoice_id: invoice2.id, result: 'success')
-
-      expect(Merchant.revenue_on_date('2018-01-01')).to eq({"total_revenue"=>"32.0"})
->>>>>>> Add a lot of stuff that fixes most everything.
     end
     it 'sends top x merchants by total revenue' do
       merchant1 = create(:merchant, name: 'M1')

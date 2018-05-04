@@ -13,7 +13,6 @@ class Item < ApplicationRecord
       .order("sum(invoice_items.quantity * invoice_items.unit_price) DESC")
       .limit(quantity)
   end
-<<<<<<< HEAD
   def self.most_items(quantity = 3)
     select("sum(invoice_items.quantity), items.*")
       .joins(invoices: :transactions)
@@ -22,18 +21,7 @@ class Item < ApplicationRecord
       .order("sum(invoice_items.quantity) DESC")
       .limit(quantity)
   end
-=======
 
-  def self.most_items(quantity = 3)
-    unscoped
-      .select("items.*, sum(invoice_items.quantity) as sold")
-      .joins(:invoice_items)
-      .group("items.id")
-      .order("sold DESC")
-      .limit(quantity)
-  end
-
->>>>>>> Add a lot of stuff that fixes most everything.
   def best_day
     invoices
       .joins(:invoice_items)
