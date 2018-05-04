@@ -18,4 +18,12 @@ class Item < ApplicationRecord
       .order("sum(invoice_items.quantity) DESC")
       .limit(quantity)
   end
+  def best_day
+    invoices
+      .joins(:transactions)
+      .where(transactions: { result: 'success' } )
+      .select("sum(invoice_items.quantity * invoice_items.unit_price) AS revenue, invoices.created_at AS best_day")
+      .group('best_day')
+      .order('revenue')
+  end
 end

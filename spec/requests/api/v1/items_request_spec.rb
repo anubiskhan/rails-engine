@@ -123,7 +123,7 @@ describe 'items API' do
     expect(json[0]["id"]).to eq(item3.id)
     expect(json[1]["id"]).to eq(item2.id)
   end
-  it 'sends the date of the most sales for a single item' do
+  xit 'sends the date of the most sales for a single item' do
     item          = create(:item)
     bad_invoice   = create(:invoice, created_at: Date.yesterday)
     good_invoice  = create(:invoice, created_at: Date.today)
