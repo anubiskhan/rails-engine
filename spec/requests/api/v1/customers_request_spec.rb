@@ -132,4 +132,20 @@ describe 'customers API' do
     expect(json[1]["id"]).to eq(transaction2.id)
     expect(json[2]["id"]).to eq(transaction3.id)
   end
+  it 'sends favorite merchant' do
+    customer     = create(:customer)
+    good_merch   = create(:merchant)
+    bad_merch    = create(:merchant)
+    good_invoice = create_list(:invoice, 5, customer_id: customer.id, merchant_id: good_merch.id)
+    transaction  = create(:transaction, invoice_id: good_invoice.first.id, result: 1)
+    bad_invoice  = create(:invoice, customer_id: customer.id, merchant_id: bad_merch.id)
+    transaction  = create(:transaction, invoice_id: bad_invoice.id, result: 0)
+
+    get "/api/v1/customers/#{customer.id}/favorite_merchant"
+
+    json = JSON.parse(response.body)
+
+    expect(response).to be_success
+    expect(json["name"]).to eq(good_merch.name)
+  end
 end
