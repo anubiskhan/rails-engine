@@ -141,6 +141,7 @@ describe 'merchants API' do
     invoice2 = create(:invoice, merchant_id: merchant2.id, created_at: '2018-01-01')
     create(:invoice_item, invoice_id: invoice1.id, quantity: 2, unit_price: 1000)
     create(:invoice_item, invoice_id: invoice2.id, quantity: 4, unit_price: 3)
+    create(:invoice_item, invoice_id: invoice2.id, quantity: 4, unit_price: 300)
     create(:transaction, invoice_id: invoice1.id, result: 'success')
     create(:transaction, invoice_id: invoice2.id, result: 'success')
 
@@ -175,7 +176,7 @@ describe 'merchants API' do
 
     json = JSON.parse(response.body)
 
-    expect(json).to eq(27500)
+    expect(json).to eq({"revenue"=>"275.0"})
   end
   it 'sends top x merchants by total revenue' do
     merchant1 = create(:merchant, name: 'M1')
@@ -199,8 +200,30 @@ describe 'merchants API' do
     expect(json[1]["id"]).to eq(merchant1.id)
     expect(json[0]["id"]).to eq(merchant3.id)
   end
+  it 'sends top x merchants by total items sold' do
+    merchant1 = create(:merchant)
+    merchant2 = create(:merchant)
+    merchant3 = create(:merchant)
+    invoice1 = create(:invoice, merchant_id: merchant1.id)
+    invoice2 = create(:invoice, merchant_id: merchant2.id)
+    invoice3 = create(:invoice, merchant_id: merchant3.id)
+    create(:invoice_item, invoice_id: invoice1.id, quantity: 22)
+    create(:invoice_item, invoice_id: invoice2.id, quantity: 1)
+    create(:invoice_item, invoice_id: invoice3.id, quantity: 4)
+    create(:transaction, invoice_id: invoice1.id, result: 'success')
+    create(:transaction, invoice_id: invoice2.id, result: 'success')
+    create(:transaction, invoice_id: invoice3.id, result: 'success')
+
+    get "/api/v1/merchants/most_items?quantity=2"
+
+    json = JSON.parse(response.body)
+
+    expect(response).to be_success
+    expect(json.length).to eq(2)
+    expect(json[1]["id"]).to eq(merchant1.id)
+    expect(json[0]["id"]).to eq(merchant3.id)
+  end
   it 'sends customers which have a pending invoice' do
-    skip
     merchant = create(:merchant)
     customer1 = create(:customer)
     customer2 = create(:customer)
@@ -220,7 +243,7 @@ describe 'merchants API' do
     json = JSON.parse(response.body)
 
     expect(response).to be_success
-    expect(json[1]["id"]).to eq(merchant1.id)
-    expect(json[0]["id"]).to eq(merchant3.id)
+    expect(json[1]["id"]).to eq(merchant3.id)
+    expect(json[0]["id"]).to eq(merchant4.id)
   end
 end

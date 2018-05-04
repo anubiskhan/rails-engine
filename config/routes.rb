@@ -9,6 +9,16 @@ Rails.application.routes.draw do
         get '/:id/transactions',      to: 'transactions#index'
         get '/:id/favorite_merchant', to: 'favorite_merchant#show'
       end
+      namespace :items do
+        get '/find',              to: 'find#show'
+        get '/find_all',          to: 'find#index'
+        get '/random',            to: 'random#show'
+        get '/:id/invoice_items', to: 'invoice_items#index'
+        get '/:id/merchant',      to: 'merchant#show'
+        get '/most_revenue',      to: 'most_revenue#show'
+        get '/most_items',        to: 'most_items#show'
+        get '/:id/best_day',      to: 'best_day#show'
+      end
       namespace :invoices do
         get '/find',             to: 'find#show'
         get '/find_all',         to: 'find#index'
@@ -33,7 +43,8 @@ Rails.application.routes.draw do
         get '/:id/invoice_items', to: 'invoice_items#index'
         get '/:id/merchant',      to: 'merchant#show'
         get '/most_revenue',      to: 'most_revenue#show'
-        get '/most_items',      to: 'most_items#show'
+        get '/most_items',        to: 'most_items#show'
+        get '/:id/best_day',      to: 'best_day#show'
       end
       namespace :merchants do
         get '/find',                            to: 'find#show'
@@ -45,6 +56,7 @@ Rails.application.routes.draw do
         get '/revenue',                         to: 'revenue#index'
         get '/:id/revenue',                     to: 'revenue#show'
         get '/most_revenue',                    to: 'most_revenue#show'
+        get '/most_items',                      to: 'most_items#index'
         get '/:id/customers_with_pending_invoices', to: 'customer#index'
       end
       namespace :transactions do

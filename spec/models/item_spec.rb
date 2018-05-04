@@ -40,5 +40,15 @@ describe Item do
       expect(Item.most_items(2)[0]["id"]).to eq(item3.id)
       expect(Item.most_items(2)[1]["id"]).to eq(item2.id)
     end
+    it '#best day' do
+      item          = create(:item)
+      bad_invoice   = create(:invoice, created_at: Date.yesterday)
+      good_invoice  = create(:invoice, created_at: Date.tomorrow)
+      create_list(:invoice_item, 5, item_id: item.id, invoice_id: good_invoice.id, quantity: 5)
+      create_list(:invoice_item, 2, item_id: item.id, invoice_id: bad_invoice.id, quantity: 2)
+      create(:transaction, result: 'success', invoice_id: good_invoice.id)
+
+      expect(item.best_day).to eq(good_invoice.created_at)
+    end
   end
 end

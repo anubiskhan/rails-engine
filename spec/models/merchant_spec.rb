@@ -84,7 +84,7 @@ describe Merchant do
       invoice_items = create_list(:invoice_item, 5, invoice_id: invoices.first.id, unit_price: 1100, quantity: 5)
       transaction   = create(:transaction, invoice_id: invoices.first.id, result: 'success')
 
-      expect(merchant.revenue).to eq(27500)
+      expect(merchant.revenue).to eq({"revenue"=>"275.0"})
     end
   end
 end
