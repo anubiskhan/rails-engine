@@ -42,7 +42,7 @@ Rails.application.routes.draw do
         get '/:id/favorite_customer', to: 'favorite_customer#show'
         get '/revenue',               to: 'revenue#index'
         get '/:id/revenue',           to: 'revenue#show'
-
+        get '/most_revenue',           to: 'most_revenue#show'
       end
       namespace :transactions do
         get '/find',        to: 'find#show'
