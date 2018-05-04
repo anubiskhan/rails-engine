@@ -141,11 +141,11 @@ describe 'customers API' do
     bad_invoice  = create(:invoice, customer_id: customer.id, merchant_id: bad_merch.id)
     transaction  = create(:transaction, invoice_id: bad_invoice.id, result: 0)
 
-    get "/customers/#{customer.id}/favorite_merchant"
+    get "/api/v1/customers/#{customer.id}/favorite_merchant"
 
     json = JSON.parse(response.body)
 
     expect(response).to be_success
-    expect(json["merchant"]).to eq(good_merch.name)
+    expect(json["name"]).to eq(good_merch.name)
   end
 end
