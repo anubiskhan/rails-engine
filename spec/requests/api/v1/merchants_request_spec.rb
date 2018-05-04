@@ -185,4 +185,28 @@ describe 'merchants API' do
     expect(json[1]["id"]).to eq(merchant1.id)
     expect(json[0]["id"]).to eq(merchant3.id)
   end
+  it 'sends customers which have a pending invoice' do
+    skip
+    merchant = create(:merchant)
+    customer1 = create(:customer)
+    customer2 = create(:customer)
+    customer3 = create(:customer)
+    customer4 = create(:customer)
+    invoice1 = create(:invoice, customer_id: customer1.id, merchant_id: merchant.id)
+    invoice2 = create(:invoice, customer_id: customer2.id, merchant_id: merchant.id)
+    invoice3 = create(:invoice, customer_id: customer3.id, merchant_id: merchant.id)
+    invoice4 = create(:invoice, customer_id: customer4.id, merchant_id: merchant.id)
+    transaction1 = create(:transaction, invoice_id: invoice1.id, result: 'success')
+    transaction2 = create(:transaction, invoice_id: invoice2.id, result: 'success')
+    transaction3 = create(:transaction, invoice_id: invoice3.id, result: 'failed')
+    transaction4 = create(:transaction, invoice_id: invoice4.id, result: 'failed')
+
+    get "/api/v1/merchants/#{merchant.id}/customers_with_pending_invoices"
+
+    json = JSON.parse(response.body)
+
+    expect(response).to be_success
+    expect(json[1]["id"]).to eq(merchant1.id)
+    expect(json[0]["id"]).to eq(merchant3.id)
+  end
 end

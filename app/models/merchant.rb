@@ -32,4 +32,8 @@ class Merchant < ApplicationRecord
       .order("sum(invoice_items.quantity * invoice_items.unit_price) DESC")
       .limit(quantity)
   end
+
+  def customers_with_pending_invoices
+
+  end
 end
