@@ -46,7 +46,11 @@ Visit the url associated with locally hosted servers on your machine (traditiona
 Endpoints can be found [here](http://backend.turing.io/module3/projects/rails_engine#check-ins-and-milestones).
 
 #### Testing
-Run ```rspec``` on the command line
+Run 
+```
+rspec
+``` 
+on the command line
 
 #### Database
 
