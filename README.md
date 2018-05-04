@@ -56,7 +56,7 @@ Run ```rspec``` on the command line
 
   [Adam Lusk](https://github.com/Vadlusk)  
   [Kelly Schroeder](https://github.com/anubiskhan)
-##### Versions
+#### Versions
 
 factory_bot 4.8.2  
 faker 1.8.7  
