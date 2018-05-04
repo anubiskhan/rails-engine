@@ -67,7 +67,7 @@ describe 'transactions API' do
     expect(json["id"]).to eq(transaction.id)
   end
   it 'finds one transaction by created at' do
-    transaction = create(:transaction)
+    transaction = create(:transaction, created_at: Date.today)
 
     get "/api/v1/transactions/find?created_at=#{transaction.created_at}"
 
@@ -76,7 +76,7 @@ describe 'transactions API' do
     expect(json["id"]).to eq(transaction.id)
   end
   it 'finds one transaction by updated at' do
-    transaction = create(:transaction)
+    transaction = create(:transaction, updated_at: Date.today)
 
     get "/api/v1/transactions/find?updated_at=#{transaction.updated_at}"
 

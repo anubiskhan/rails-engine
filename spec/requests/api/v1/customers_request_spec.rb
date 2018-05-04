@@ -50,16 +50,15 @@ describe 'customers API' do
     expect(json["id"]).to eq(customer.id)
   end
   it 'finds one customer by created at' do
-    customer = create(:customer)
+    customer = create(:customer, created_at: Date.today)
 
     get "/api/v1/customers/find?created_at=#{customer.created_at}"
-
     json = JSON.parse(response.body)
 
     expect(json["id"]).to eq(customer.id)
   end
   it 'finds one customer by updated at' do
-    customer = create(:customer)
+    customer = create(:customer, updated_at: Date.today)
 
     get "/api/v1/customers/find?updated_at=#{customer.updated_at}"
 
@@ -78,14 +77,14 @@ describe 'customers API' do
   end
   it 'finds all customers by first name' do
     customers = create_list(:customer, 10)
+    customer  = create(:customer, first_name: 'Jimbo')
 
-    get "/api/v1/customers/find_all?first_name=#{customers.first.first_name}"
+    get "/api/v1/customers/find_all?first_name=Jimbo"
 
     json = JSON.parse(response.body)
 
-    customers.each_with_index do |customer, index|
-      expect(json[index]["id"]).to eq(customer.id)
-    end
+    expect(json.length).to eq(1)
+    expect(json[0]["id"]).to eq(customer.id)
   end
   it 'sends a random customer' do
     customer = create(:customer)

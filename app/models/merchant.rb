@@ -16,4 +16,11 @@ class Merchant < ApplicationRecord
     .where("Date(invoices.created_at) = ?", date)
     .sum("invoice_items.quantity * invoice_items.unit_price")}"}
   end
+
+  def revenue
+    invoices
+      .joins(:transactions, :invoice_items)
+      .where(transactions: {result: 1})
+      .sum("invoice_items.quantity * invoice_items.unit_price")
+  end
 end

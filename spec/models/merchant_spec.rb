@@ -35,4 +35,14 @@ describe Merchant do
       expect(Merchant.revenue_on_date('2018-01-01')).to eq({"total_revenue"=>"32"})
     end
   end
+  context 'instance methods' do
+    it '#revenue' do
+      merchant      = create(:merchant)
+      invoices      = create_list(:invoice, 2, merchant_id: merchant.id)
+      invoice_items = create_list(:invoice_item, 5, invoice_id: invoices.first.id, unit_price: 1100, quantity: 5)
+      transaction   = create(:transaction, invoice_id: invoices.first.id, result: 'success')
+
+      expect(merchant.revenue).to eq(27500)
+    end
+  end
 end

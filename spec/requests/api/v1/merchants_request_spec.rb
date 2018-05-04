@@ -43,7 +43,7 @@ describe 'merchants API' do
     expect(json["id"]).to eq(merchant.id)
   end
   it 'finds one merchant by created at' do
-    merchant = create(:merchant, created_at: '2018-01-01')
+    merchant = create(:merchant, created_at: Date.today)
 
     get "/api/v1/merchants/find?created_at=2018-01-01"
 
@@ -53,7 +53,7 @@ describe 'merchants API' do
     expect(json["id"]).to eq(merchant.id)
   end
   it 'finds one merchant by updated at' do
-    merchant = create(:merchant, updated_at: '2018-01-01')
+    merchant = create(:merchant, updated_at: Date.today)
 
     get "/api/v1/merchants/find?updated_at=2018-01-01"
 
@@ -150,5 +150,17 @@ describe 'merchants API' do
 
     expect(response).to be_success
     expect(json).to eq({"total_revenue"=>"32"})
+  end
+  it 'finds total revenue for single merchant' do
+    merchant      = create(:merchant)
+    invoices      = create_list(:invoice, 2, merchant_id: merchant.id)
+    invoice_items = create_list(:invoice_item, 5, invoice_id: invoices.first.id, unit_price: 1100, quantity: 5)
+    transaction   = create(:transaction, invoice_id: invoices.first.id, result: 'success')
+
+    get "/api/v1/merchants/#{merchant.id}/revenue"
+
+    json = JSON.parse(response.body)
+
+    expect(json).to eq(27500)
   end
 end
