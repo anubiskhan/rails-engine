@@ -31,6 +31,16 @@ describe 'invoice items API' do
     expect(response).to be_success
     expect(json['id']).to eq(invoice_item.id)
   end
+  it 'can find an invoice item by unit price' do
+    invoice_item = create(:invoice_item)
+
+    get "/api/v1/invoice_items/find?unit_price=#{invoice_item.unit_price}"
+
+    json = JSON.parse(response.body)
+
+    expect(response).to be_success
+    expect(json['id']).to eq(invoice_item.id)
+  end
   it 'can find multiple invoice items' do
     invoice_item1 = create(:invoice_item, unit_price: 112)
     invoice_item2 = create(:invoice_item, unit_price: 112)

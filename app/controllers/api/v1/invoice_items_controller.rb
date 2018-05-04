@@ -10,6 +10,14 @@ class Api::V1::InvoiceItemsController < ApplicationController
   private
 
   def invoice_item_params
-    params.require(:item).permit(:id, :item_id, :invoice_id, :unit_price, :quantity, :created_at, :updated_at)
+    params.require(:item).permit(
+      :id,
+      :item_id,
+      :invoice_id,
+      :unit_price,
+      :quantity,
+      :created_at,
+      :updated_at
+    )
   end
 end
