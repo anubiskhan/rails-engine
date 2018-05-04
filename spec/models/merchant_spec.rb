@@ -51,6 +51,22 @@ describe Merchant do
       expect(Merchant.most_revenue(2)[0]["id"]).to eq(merchant3.id)
       expect(Merchant.most_revenue(2)[1]["id"]).to eq(merchant1.id)
     end
+    it 'sends customers which have a pending invoice' do
+      customer1 = create(:customer)
+      customer2 = create(:customer)
+      customer3 = create(:customer)
+      customer4 = create(:customer)
+      invoice1 = create(:invoice, customer_id: customer1.id)
+      invoice2 = create(:invoice, customer_id: customer2.id)
+      invoice3 = create(:invoice, customer_id: customer3.id)
+      invoice4 = create(:invoice, customer_id: customer4.id)
+      transaction1 = create(:transaction, invoice_id: invoice1.id, result: 'success')
+      transaction2 = create(:transaction, invoice_id: invoice2.id, result: 'success')
+      transaction3 = create(:transaction, invoice_id: invoice3.id, result: 'failed')
+      transaction4 = create(:transaction, invoice_id: invoice4.id, result: 'failed')
+
+      expect(pending_customers.length).to eq(2)
+    end
   end
   context 'instance methods' do
     it '#revenue' do
