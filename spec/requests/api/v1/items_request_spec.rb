@@ -123,4 +123,18 @@ describe 'items API' do
     expect(json[0]["id"]).to eq(item3.id)
     expect(json[1]["id"]).to eq(item2.id)
   end
+  it 'sends the date of the most sales for a single item' do
+    item          = create(:item)
+    bad_invoice   = create(:invoice, created_at: Date.yesterday)
+    good_invoice  = create(:invoice, created_at: Date.today)
+    create_list(:invoice_item, 5, item_id: item.id, invoice_id: good_invoice.id, quantity: 5)
+    create_list(:invoice_item, 2, item_id: item.id, invoice_id: bad_invoice.id, quantity: 5)
+
+    get "/api/v1/items/#{item.id}/best_day"
+
+    json = JSON.parse(response.body)
+
+    expect(response).to be_success
+    expect(json).to eq(good_invoice.created_at)
+  end
 end
