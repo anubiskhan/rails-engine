@@ -41,7 +41,7 @@ In order to consume the API, take the following steps:
 
 ### Utilization
 
-Visit the url associated with locally hosted servers on your machine (traditionally http://localhost:3000/) and you're ready to get some data!
+Visit the url associated with locally hosted servers on your machine (traditionally http://localhost:3000/api/v1) and you're ready to get some data!
 
 Endpoints can be found [here](http://backend.turing.io/module3/projects/rails_engine#check-ins-and-milestones).
 
