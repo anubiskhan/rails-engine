@@ -63,10 +63,9 @@ describe 'invoices API' do
     expect(json['id']).to eq(invoice.id)
   end
   it 'can find an invoice by created at' do
-    skip
-    invoice = create(:invoice)
+    invoice = create(:invoice, created_at: '2018-01-01')
 
-    get "/api/v1/invoices/find?created_at=#{invoice.created_at}"
+    get "/api/v1/invoices/find?created_at=2018-01-01"
 
     json = JSON.parse(response.body)
 
@@ -74,10 +73,9 @@ describe 'invoices API' do
     expect(json['id']).to eq(invoice.id)
   end
   it 'can find an invoice by updated at' do
-    skip
-    invoice = create(:invoice)
+    invoice = create(:invoice, updated_at: '2018-01-01')
 
-    get "/api/v1/invoices/find?updated_at=#{invoice.updated_at}"
+    get "/api/v1/invoices/find?updated_at=2018-01-01"
 
     json = JSON.parse(response.body)
 

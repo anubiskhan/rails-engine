@@ -43,10 +43,9 @@ describe 'merchants API' do
     expect(json["id"]).to eq(merchant.id)
   end
   it 'finds one merchant by created at' do
-    skip
-    merchant = create(:merchant)
+    merchant = create(:merchant, created_at: '2018-01-01')
 
-    get "/api/v1/merchants/find?created_at=#{merchant.created_at}"
+    get "/api/v1/merchants/find?created_at=2018-01-01"
 
     json = JSON.parse(response.body)
 
@@ -54,10 +53,9 @@ describe 'merchants API' do
     expect(json["id"]).to eq(merchant.id)
   end
   it 'finds one merchant by updated at' do
-    skip
-    merchant = create(:merchant)
+    merchant = create(:merchant, updated_at: '2018-01-01')
 
-    get "/api/v1/merchants/find?updated_at=#{merchant.updated_at}"
+    get "/api/v1/merchants/find?updated_at=2018-01-01"
 
     json = JSON.parse(response.body)
 
